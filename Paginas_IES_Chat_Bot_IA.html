@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IES N° 10 - Portal Público y Asistente Virtual de Ingresantes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            ies: {
+              dark: '#0a1424',
+              green: '#0b4f3e',
+              emerald: '#10b981',
+              light: '#f4f7f9'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Patrón de cuadrícula institucional idéntico al Portal Público IES N° 10 */
+    .hero-grid {
+      background-color: #0b4f3e;
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px),
+        radial-gradient(circle at 85% 20%, rgba(16, 185, 129, 0.28), transparent 55%),
+        linear-gradient(135deg, #07382c 0%, #0d5946 60%, #092734 100%);
+      background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%;
+    }
+    @keyframes floatPulse {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+    .float-anim { animation: floatPulse 3s ease-in-out infinite; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .msg-anim { animation: fadeIn 0.25s ease-out forwards; }
+    /* Scrollbar estilizado para el chatbot */
+    .chat-scroll::-webkit-scrollbar { width: 6px; }
+    .chat-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+    .chat-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .chat-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-[#f5f7fb] text-slate-800 font-sans antialiased selection:bg-emerald-600 selection:text-white">
+
+  <!-- HEADER INSTITUCIONAL -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <img src="https://panel-administrativo-ies10.vercel.app/assets/Image/LogoInstitucional.png" 
+             onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=IES+10&background=0b4f3e&color=fff&bold=true';"
+             alt="Logo IES N° 10" class="w-10 h-10 object-contain transition-transform group-hover:scale-105" />
+        <div class="flex flex-col">
+          <span class="text-xs sm:text-sm font-extrabold tracking-tight text-slate-900">INSTITUTO DE EDUCACIÓN SUPERIOR IES10</span>
+          <span class="text-[10px] font-semibold tracking-widest text-emerald-600 uppercase">Portal Público · Asistente IA</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+        <a href="#sedes" class="hover:text-emerald-700 transition-colors">Sedes</a>
+        <a href="#carreras" class="hover:text-emerald-700 transition-colors">Oferta Académica (24)</a>
+        <a href="#admision" class="hover:text-emerald-700 transition-colors">Ruta de Ingreso</a>
+        <a href="#contacto" class="hover:text-emerald-700 transition-colors">Contacto</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openChatWithTopic('menu')" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-full shadow-sm transition-all hover:shadow-md">
+          <span class="w-2 h-2 rounded-full bg-emerald-200 animate-ping"></span>
+          <span>Consultar Chatbot</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO BANNER ESTILO PORTAL IES 10 -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4">
+    <div class="hero-grid rounded-2xl p-6 sm:p-10 md:p-12 text-white shadow-lg relative overflow-hidden">
+      <div class="max-w-3xl relative z-10">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1 rounded-full text-xs font-medium mb-4">
+          <span>🎓</span>
+          <span>Departamento Ledesma y El Ramal · Jujuy</span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+          Portal de Admisiones, Oferta Académica y Asistente Virtual IES N° 10
+        </h1>
+        <p class="mt-3 text-sm sm:text-base text-emerald-50/90 leading-relaxed max-w-2xl">
+          Explorá las <strong>24 carreras oficiales</strong> distribuidas en nuestras 4 sedes (Escuela Normal, Comercial N° 4, Fraile Pintado y Yuto), conocé las resoluciones ministeriales, prácticas profesionalizantes y consultá al instante a nuestro <strong>Chatbot Interactivo</strong>.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button onclick="openChatWithTopic('carreras_sede')" class="bg-white text-emerald-900 hover:bg-emerald-50 font-semibold text-sm px-5 py-2.5 rounded-xl shadow transition-all flex items-center gap-2">
+            <span>💬</span> Explorar Carreras en el Chatbot
+          </button>
+          <button onclick="openChatWithTopic('ingreso_pasos')" class="bg-emerald-700/70 hover:bg-emerald-700 border border-white/20 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-all">
+            📋 Ver Pasos y Fechas de Ingreso
+          </button>
+          <a href="https://nexo.jujuy.edu.ar" target="_blank" rel="noopener noreferrer" class="bg-slate-900/50 hover:bg-slate-900/80 border border-white/15 text-emerald-200 font-medium text-sm px-4 py-2.5 rounded-xl transition-all">
+            🔗 Ir a nexo.jujuy.edu.ar ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN DE LAS 4 SEDES -->
+  <section id="sedes" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-5 gap-2">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Presencia Regional</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Nuestras 4 Sedes Académicas</h2>
+      </div>
+      <p class="text-xs sm:text-sm text-slate-500">Hacé clic en cualquier sede para filtrar sus carreras o consultarla en el Chatbot.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Sede Normal -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-emerald-500 transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Sede Central</span>
+            <span class="text-xs font-semibold text-slate-400">9 Carreras</span>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">Sede Escuela Normal</h3>
+          <p class="text-xs text-slate-500 mt-1">📍 Libertador Gral. San Martín (Belisario Roldán esq. Pte. Perón)</p>
+          <p class="text-xs text-slate-600 mt-2">6 Profesorados y 3 Tecnicaturas Superiores. Apertura y cursado desde las 14:30 hs y turno noche.</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex gap-2">
+          <button onclick="filterBySede('Escuela Normal')" class="flex-1 text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 py-2 rounded-lg transition-colors">Ver en Grilla</button>
+          <button onclick="openChatWithTopic('sede_normal')" class="text-xs font-semibold border border-slate-200 hover:border-emerald-500 text-slate-700 px-3 py-2 rounded-lg transition-colors" title="Consultar al Chatbot">💬</button>
+        </div>
+      </div>
+
+      <!-- Sede Comercial N°4 -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-emerald-500 transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">Sede Libertador</span>
+            <span class="text-xs font-semibold text-slate-400">4 Carreras</span>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">Sede Comercial N° 4</h3>
+          <p class="text-xs text-slate-500 mt-1">📍 Libertador Gral. San Martín (Esc. de Comercio N° 4)</p>
+          <p class="text-xs text-slate-600 mt-2">2 Profesorados (Matemática y Cs. de la Administración) y 2 Tecnicaturas de Salud. Desde las 18:30 hs.</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex gap-2">
+          <button onclick="filterBySede('Comercial N°4')" class="flex-1 text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 py-2 rounded-lg transition-colors">Ver en Grilla</button>
+          <button onclick="openChatWithTopic('sede_comer')" class="text-xs font-semibold border border-slate-200 hover:border-emerald-500 text-slate-700 px-3 py-2 rounded-lg transition-colors" title="Consultar al Chatbot">💬</button>
+        </div>
+      </div>
+
+      <!-- Sede Fraile Pintado -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-emerald-500 transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">Extensión Áulica</span>
+            <span class="text-xs font-semibold text-slate-400">8 Carreras</span>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">Sede Fraile Pintado</h3>
+          <p class="text-xs text-slate-500 mt-1">📍 Localidad de Fraile Pintado (Dpto. Ledesma)</p>
+          <p class="text-xs text-slate-600 mt-2">Prof. en Historia y 7 Tecnicaturas (incluyendo Ciencia de Datos e IA, Agro, PyMEs e Higiene y Seguridad). Desde las 18:30 hs.</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex gap-2">
+          <button onclick="filterBySede('Fraile Pintado')" class="flex-1 text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 py-2 rounded-lg transition-colors">Ver en Grilla</button>
+          <button onclick="openChatWithTopic('sede_fraile')" class="text-xs font-semibold border border-slate-200 hover:border-emerald-500 text-slate-700 px-3 py-2 rounded-lg transition-colors" title="Consultar al Chatbot">💬</button>
+        </div>
+      </div>
+
+      <!-- Sede Yuto -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-emerald-500 transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">Extensión Áulica</span>
+            <span class="text-xs font-semibold text-slate-400">3 Carreras</span>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">Sede Yuto</h3>
+          <p class="text-xs text-slate-500 mt-1">📍 Localidad de Yuto (Dpto. Ledesma)</p>
+          <p class="text-xs text-slate-600 mt-2">3 Tecnicaturas Superiores: Desarrollo de Software, Tecnología de los Alimentos y Acompañamiento Terapéutico. Desde 18:30 hs.</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex gap-2">
+          <button onclick="filterBySede('Yuto')" class="flex-1 text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 py-2 rounded-lg transition-colors">Ver en Grilla</button>
+          <button onclick="openChatWithTopic('sede_yuto')" class="text-xs font-semibold border border-slate-200 hover:border-emerald-500 text-slate-700 px-3 py-2 rounded-lg transition-colors" title="Consultar al Chatbot">💬</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORADOR DE OFERTA ACADÉMICA Y ESTRUCTURA CURRICULAR (24 CARRERAS) -->
+  <section id="carreras" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-white rounded-xl border border-slate-200 p-4 sm:p-5 shadow-sm mb-6">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <!-- Botones Tipo (Estilo Portal IES 10) -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="setTipoFilter('TODAS')" id="btnTipo-TODAS" class="px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-600 text-white transition-all">Todas (24)</button>
+          <button onclick="setTipoFilter('TECNICATURA')" id="btnTipo-TECNICATURA" class="px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">Tecnicaturas (15)</button>
+          <button onclick="setTipoFilter('PROFESORADO')" id="btnTipo-PROFESORADO" class="px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">Profesorados (9)</button>
+        </div>
+
+        <!-- Selector de Sede y Buscador -->
+        <div class="flex flex-col sm:flex-row gap-3 flex-1 lg:max-w-xl">
+          <select id="selectSede" onchange="renderCarreras()" class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <option value="">📍 Todas las Sedes (4)</option>
+            <option value="Escuela Normal">Sede Central (Escuela Normal)</option>
+            <option value="Comercial N°4">Sede Comercial N°4</option>
+            <option value="Fraile Pintado">Sede Fraile Pintado</option>
+            <option value="Yuto">Sede Yuto</option>
+          </select>
+          <div class="relative flex-1">
+            <input id="searchCarrera" type="text" oninput="renderCarreras()" placeholder="🔍 Buscar carrera, título o resolución ministerial..." class="w-full bg-slate-50 border border-slate-200 rounded-lg pl-3 pr-8 py-2 text-xs sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grilla dinámica de las 24 carreras -->
+    <div id="gridCarreras" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- RUTA DE ADMISIÓN Y FECHAS CLAVE -->
+  <section id="admision" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+      <div class="max-w-2xl mb-6">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Admisiones Nivel Superior Jujuy</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">Tu Camino al IES N° 10 en 4 Pasos</h2>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">Proceso oficial de admisión según disposiciones del Ministerio de Educación de Jujuy.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 relative">
+          <span class="inline-block text-xs font-extrabold px-2.5 py-1 rounded-md bg-emerald-600 text-white mb-3">PASO 1 · ONLINE</span>
+          <h3 class="font-bold text-slate-900 text-sm">Preinscripción en NEXO</h3>
+          <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">Creá tu usuario y contraseña en <strong>nexo.jujuy.edu.ar</strong> y completá el formulario virtual. Podés preinscribirte en todas las carreras que quieras sin límite.</p>
+          <p class="text-[11px] font-semibold text-emerald-700 mt-3">📅 1° Llamado: 15/12 al 29/12 (15:00 h)<br>📅 2° Llamado: Cierre 13/02 (23:59 h)</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200 relative">
+          <span class="inline-block text-xs font-extrabold px-2.5 py-1 rounded-md bg-amber-600 text-white mb-3">PASO 2 · PRESENCIAL</span>
+          <h3 class="font-bold text-slate-900 text-sm">Confirmación Obligatoria</h3>
+          <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">Presentá en el IES: <strong>1) Fotocopia simple de DNI</strong> y <strong>2) Fotocopia simple del título secundario o constancia de finalización</strong>. <em>Si no cumplís este paso, la preinscripción se anula.</em></p>
+          <p class="text-[11px] font-semibold text-amber-800 mt-3">📅 Diciembre: 22, 23 y 29/12<br>📅 Febrero: Límite hasta el 20/02</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 relative">
+          <span class="inline-block text-xs font-extrabold px-2.5 py-1 rounded-md bg-sky-600 text-white mb-3">PASO 3 · NIVELACIÓN</span>
+          <h3 class="font-bold text-slate-900 text-sm">Cursillo de Ingreso</h3>
+          <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">Es de carácter obligatorio. Modalidad presencial o virtual según disponga el IES. Todo el material de estudio se carga en el <strong>Aula Virtual</strong> desde el primer día.</p>
+          <p class="text-[11px] font-semibold text-sky-700 mt-3">📅 Duración: Del 23/02 al 20/03</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 relative">
+          <span class="inline-block text-xs font-extrabold px-2.5 py-1 rounded-md bg-indigo-600 text-white mb-3">PASO 4 · DEFINICIÓN</span>
+          <h3 class="font-bold text-slate-900 text-sm">Examen y Orden de Mérito</h3>
+          <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">Incluye una <strong>Evaluación Final presencial y obligatoria</strong>. La nota obtenida define el <strong>Orden de Mérito</strong> (ranking), único criterio de ingreso según cupos disponibles.</p>
+          <p class="text-[11px] font-semibold text-indigo-700 mt-3">🏆 Ingreso estricto por Orden de Mérito</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER INSTITUCIONAL IDÉNTICO AL PORTAL IES 10 -->
+  <footer id="contacto" class="bg-[#0a1424] text-slate-300 mt-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8 text-xs sm:text-sm">
+      <div>
+        <div class="flex items-center gap-3 mb-3">
+          <img src="https://panel-administrativo-ies10.vercel.app/assets/Image/LogoInstitucional.png"
+               onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=IES+10&background=10b981&color=fff&bold=true';"
+               alt="Logo IES 10" class="w-9 h-9 object-contain" />
+          <div>
+            <p class="font-bold text-white text-sm">IES N° 10</p>
+            <p class="text-[10px] tracking-widest text-emerald-400 uppercase">Portal Institucional</p>
+          </div>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Excelencia académica y compromiso con el desarrollo e innovación regional de la Provincia de Jujuy.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <a href="https://www.facebook.com/profile.php?id=61566581100466" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-emerald-600 text-white text-xs transition-colors">📘 FB Dpto. Ledesma</a>
+          <a href="https://www.facebook.com/ies.fraile.pintado" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-emerald-600 text-white text-xs transition-colors">📘 FB Sede Fraile</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3">Enlaces Oficiales</h4>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li><a href="https://nexo.jujuy.edu.ar" target="_blank" rel="noopener noreferrer" class="hover:text-white">› Preinscripción Online (NEXO)</a></li>
+          <li><a href="https://superior.jujuy.edu.ar/login/index.php" target="_blank" rel="noopener noreferrer" class="hover:text-white">› Campus Virtual IES</a></li>
+          <li><a href="https://campusvirtual.jujuy.edu.ar/expo-educativa-provincial/" target="_blank" rel="noopener noreferrer" class="hover:text-white">› Expo Educativa Provincial</a></li>
+          <li><a href="https://educacion.jujuy.gob.ar/" target="_blank" rel="noopener noreferrer" class="hover:text-white">› Ministerio de Educación Jujuy</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3">Contacto y Horarios</h4>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li>📍 Calle Belisario Roldán esq. Pte. Perón, Libertador Gral. San Martín, Jujuy (Y4512)</li>
+          <li>✉️ <a href="mailto:ies10ledesma@gmail.com" class="hover:text-white">ies10ledesma@gmail.com</a></li>
+          <li>🕒 Atención general: Lunes a Viernes de 19:30 a 23:50 hs</li>
+          <li>🕒 Apertura sedes: Esc. Normal desde 14:30 hs | Comercial N°4, Fraile y Yuto desde 18:30 hs</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3">Asistente Inteligente</h4>
+        <p class="text-xs text-slate-400 leading-relaxed mb-3">
+          ¿Tenés dudas sobre resoluciones, prácticas profesionalizantes, requisitos o fechas de ingreso?
+        </p>
+        <button onclick="openChatWithTopic('menu')" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors shadow">
+          💬 Abrir Chatbot Interactivo
+        </button>
+      </div>
+    </div>
+    <div class="border-t border-slate-800/80 py-4 text-center text-[11px] text-slate-500">
+      © 2026 Instituto de Educación Superior N° 10 · Proyecto Introducción a la Inteligencia Artificial (Tec. Sup. en Ciencia de Datos e IA).
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       WIDGET DE CHATBOT INTERACTIVO FLOTANTE (PROTAGONISTA)
+       ========================================================= -->
+  <!-- Botón Flotante -->
+  <button id="chatLauncher" onclick="toggleChat()" aria-label="Abrir Asistente Virtual"
+          class="fixed bottom-5 right-5 z-50 flex items-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-3 rounded-full shadow-2xl border-2 border-white/20 float-anim transition-all">
+    <span class="text-lg">🤖</span>
+    <span class="text-xs sm:text-sm pr-1">Asistente IES N° 10</span>
+    <span class="w-2.5 h-2.5 rounded-full bg-emerald-200 animate-pulse"></span>
+  </button>
+
+  <!-- Ventana del Chatbot -->
+  <div id="chatWindow" class="fixed bottom-20 right-4 sm:right-6 z-50 w-[94vw] sm:w-[430px] max-h-[82vh] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden transition-all duration-200">
+    <!-- Cabecera del Chatbot -->
+    <div class="hero-grid px-4 py-3.5 text-white flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-white/15 border border-white/25 flex items-center justify-center text-lg shadow-inner">
+          🎓
+        </div>
+        <div>
+          <h3 class="font-bold text-sm leading-tight">Asistente Virtual IES N° 10</h3>
+          <p class="text-[11px] text-emerald-200 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-ping"></span>
+            En línea · Respuestas Oficiales Verificadas
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1">
+        <button onclick="resetChat()" title="Reiniciar conversación" class="p-1.5 rounded-lg hover:bg-white/15 text-xs text-emerald-100 transition-colors">🔄</button>
+        <button onclick="toggleChat()" title="Minimizar chat" class="p-1.5 rounded-lg hover:bg-white/15 text-sm text-white font-bold transition-colors">✕</button>
+      </div>
+    </div>
+
+    <!-- Barra rápida de acceso a Menú Principal -->
+    <div class="bg-slate-100 border-b border-slate-200 px-3 py-1.5 flex items-center justify-between text-[11px] text-slate-600">
+      <span>Seleccioná una pregunta o escribí tu consulta:</span>
+      <button onclick="handleQuickTopic('menu')" class="font-bold text-emerald-700 hover:underline">🏠 Menú Principal</button>
+    </div>
+
+    <!-- Cuerpo de Mensajes -->
+    <div id="chatMessages" class="flex-1 p-4 overflow-y-auto chat-scroll space-y-3 bg-slate-50 min-h-[340px] max-h-[55vh]"></div>
+
+    <!-- Input para consultas por texto libre -->
+    <form onsubmit="handleUserSubmit(event)" class="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
+      <input id="chatInput" type="text" placeholder="Ej: ¿Qué carreras hay en Fraile? ¿Cómo me inscribo?" 
+             class="flex-1 bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white" />
+      <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3.5 py-2 rounded-xl text-xs sm:text-sm transition-colors shadow-sm">
+        Enviar
+      </button>
+    </form>
+  </div>
+
+  <!-- =========================================================
+       BASE DE DATOS OFICIAL Y MOTOR LÓGICO DEL CHATBOT (JS)
+       ========================================================= -->
+  <script>
+    // 1. PADRON OFICIAL DE LAS 24 CARRERAS DEL IES N° 10
+    const CARRERAS = [
+      // SEDE ESCUELA NORMAL (9)
+      { id: 'c1', nombre: 'Prof. de Educación Especial Orientación en Ciegos y Disminuidos Visuales', tipo: 'PROFESORADO', sede: 'Escuela Normal', localidad: 'Libertador Gral. San Martín', res: 'R-13944-E/19', duracion: '4 años', pp: 'Campo de la Práctica Profesional Docente de 1° a 4° año (Observación, Ayudantía y Residencia).', perfil: 'Docente especializado en la atención educativa, inclusión y rehabilitación visual de estudiantes ciegos y con baja visión en todos los niveles del sistema educativo.', cohorte: 'Oferta oficial Sede Escuela Normal' },
+      { id: 'c2', nombre: 'Prof. de Educación Primaria en Educación Rural', tipo: 'PROFESORADO', sede: 'Escuela Normal', localidad: 'Libertador Gral. San Martín', res: 'R-13971-E/19', duracion: '4 años', pp: 'Práctica y Residencia Docente en escuelas primarias y contextos rurales (1° a 4° año).', perfil: 'Profesor habilitado para ejercer la docencia en el nivel primario con especialización en plurigrado y contextos rurales y periurbanos.', cohorte: 'Cohorte activa en Sede Escuela Normal' },
+      { id: 'c3', nombre: 'Prof. de Educación Secundaria en Química', tipo: 'PROFESORADO', sede: 'Escuela Normal', localidad: 'Libertador Gral. San Martín', res: 'R-13955-E/19', duracion: '4 años', pp: 'Práctica Profesional Docente I a IV y trabajo en laboratorio escolar.', perfil: 'Docente capacitado para la enseñanza de la Química General, Inorgánica, Orgánica y Biológica en escuelas secundarias.', cohorte: 'Oferta oficial Sede Escuela Normal' },
+      { id: 'c4', nombre: 'Prof. de Educación Sup. en Ciencias de la Educación', tipo: 'PROFESORADO', sede: 'Escuela Normal', localidad: 'Libertador Gral. San Martín', res: 'R-13935-E/19', duracion: '5 años', pp: 'Prácticas en gestión pedagógica, asesoría institucional y docencia en nivel secundario y superior.', perfil: 'Profesional preparado para la docencia en nivel secundario y superior, diseño curricular, orientación educativa y asesoramiento pedagógico institucional.', cohorte: 'Oferta oficial Sede Escuela Normal' },
+      { id: 'c5', nombre: 'Prof. de Educ. Esp. Orientación en Discapacidad Neuro Motora', tipo: 'PROFESORADO', sede: 'Escuela Normal', localidad: 'Libertador Gral. San Martín', res: 'R-13916-E/19', duracion: '4 años', pp: 'Práctica Profesional Docente de 1° a 4° año en instituciones especiales e inclusivas.', perfil: 'Docente especializado en el abordaje pedagógico, adaptaciones de acceso y apoyo a la inclusión de personas con discapacidad neuromotora.', cohorte: 'Oferta oficial Sede Escuela Normal' },
+      { id: 'c6', nombre: 'Prof. de Inglés', tipo: 'PROFESORADO', sede: 'Escuela Normal', localidad: 'Libertador Gral. San Martín', res: 'R-13942-E/19', duracion: '4 años', pp: 'Práctica y Residencia Docente en niveles Inicial, Primario y Secundario.', perfil: 'Profesor habilitado para la enseñanza del idioma inglés en los distintos niveles obligatorios, con dominio lingüístico, fonético y didáctico.', cohorte: 'Apertura regular todos los años' },
+      { id: 'c7', nombre: 'Tec. Superior en Cocinas Regionales y Cultura Alimentaria', tipo: 'TECNICATURA', sede: 'Escuela Normal', localidad: 'Libertador Gral. San Martín', res: 'R-3084-E/22', duracion: '3 años', pp: '2° año: PP I (5 hs cát.) · 3° año: PP II (5 hs cát.)', perfil: 'Técnico especializado en gastronomía regional jujeña y andina, patrimonio alimentario, gestión de emprendimientos gastronómicos y bromatología.', cohorte: 'Oferta oficial Sede Escuela Normal' },
+      { id: 'c8', nombre: 'Tec. Superior en Entrenamiento Deportivo', tipo: 'TECNICATURA', sede: 'Escuela Normal', localidad: 'Libertador Gral. San Martín', res: 'R-5428-E/23', duracion: '3 años', pp: '2° año: PP I (6 hs cát.) · 3° año: PP II (8 hs cát.)', perfil: 'Técnico capacitado para planificar, dirigir y evaluar programas de preparación física, entrenamiento deportivo de base y alto rendimiento.', cohorte: 'Oferta oficial Sede Escuela Normal' },
+      { id: 'c9', nombre: 'Tec. Superior en Gestión de Energías Renovables', tipo: 'TECNICATURA', sede: 'Escuela Normal', localidad: 'Libertador Gral. San Martín', res: 'R-3758-E/22', duracion: '3 años', pp: '2° año: PP I (5 hs cát.) · 3° año: PP II (5 hs cát.)', perfil: 'Técnico formado para proyectar, instalar y gestionar sistemas de energía solar fotovoltaica, térmica, biomasa y eficiencia energética regional.', cohorte: 'Cohorte abierta en 2026 (a término)' },
+
+      // SEDE COMERCIAL N°4 (4)
+      { id: 'c10', nombre: 'Enfermería (Tecnicatura Superior)', tipo: 'TECNICATURA', sede: 'Comercial N°4', localidad: 'Libertador Gral. San Martín', res: 'R-3586-E/S-22', duracion: '3 años', pp: '1° año: PP I (10 hs cát.) · 2° año: PP II (10 hs cát.) · 3° año: PP III (12 hs cát.)', perfil: 'Profesional de la salud capacitado para el cuidado integral del paciente en hospitales, clínicas y centros de atención primaria de la salud.', cohorte: 'Oferta oficial Sede Comercial N°4' },
+      { id: 'c11', nombre: 'Prof. de Educación Secundaria en Ciencias de la Administración', tipo: 'PROFESORADO', sede: 'Comercial N°4', localidad: 'Libertador Gral. San Martín', res: 'R-13563-E/19', duracion: '4 años', pp: 'Práctica y Residencia Docente de 1° a 4° año en escuelas secundarias orientadas.', perfil: 'Docente especializado en la enseñanza de Administración, Sistemas de Información Contable, Economía y Gestión Organizacional en el nivel secundario.', cohorte: 'Oferta oficial Sede Comercial N°4' },
+      { id: 'c12', nombre: 'Prof. de Educación Secundaria en Matemática', tipo: 'PROFESORADO', sede: 'Comercial N°4', localidad: 'Libertador Gral. San Martín', res: 'R-13557-E/19', duracion: '4 años', pp: 'Práctica y Residencia Docente de 1° a 4° año en el nivel secundario.', perfil: 'Docente con sólida formación en Álgebra, Análisis Matemático, Geometría y Probabilidad para la enseñanza de la Matemática en escuelas secundarias.', cohorte: 'Oferta oficial Sede Comercial N°4' },
+      { id: 'c13', nombre: 'Tec. Superior en Agente Sanitario y Promotor de la Salud', tipo: 'TECNICATURA', sede: 'Comercial N°4', localidad: 'Libertador Gral. San Martín', res: 'R-3466-E/S-22', duracion: '3 años', pp: '1° año: PP I (6 hs cát.) · 2° año: PP II (8 hs cát.) · 3° año: PP III (12 hs cát.)', perfil: 'Técnico especializado en Atención Primaria de la Salud (APS), prevención comunitaria, relevamiento sanitario y promoción de la salud en terreno.', cohorte: 'Oferta oficial Sede Comercial N°4' },
+
+      // SEDE FRAILE PINTADO (8)
+      { id: 'c14', nombre: 'Prof. de Educación Secundaria en Historia', tipo: 'PROFESORADO', sede: 'Fraile Pintado', localidad: 'Fraile Pintado', res: 'R-13565-E/19', duracion: '4 años', pp: 'Práctica y Residencia Docente de 1° a 4° año en el nivel secundario.', perfil: 'Docente habilitado para la enseñanza de la Historia Regional, Argentina, Americana y Universal e investigación histórica en el nivel secundario.', cohorte: 'Cohorte abierta en 2026 en Sede Fraile Pintado' },
+      { id: 'c15', nombre: 'Tec. Sup. en Niñez, Adolescencia y Familia', tipo: 'TECNICATURA', sede: 'Fraile Pintado', localidad: 'Fraile Pintado', res: '6439-E/25', duracion: '3 años', pp: '1° año: PP I (6 hs cát.) · 2° año: PP II (6 hs cát.) · 3° año: PP III (6 hs cát.)', perfil: 'Técnico capacitado para intervenir en dispositivos de promoción y protección integral de derechos de niñas, niños, adolescentes y familias.', cohorte: 'Oferta oficial Sede Fraile Pintado' },
+      { id: 'c16', nombre: 'Tec. Superior en Administración de Empresas c/o en Comercialización', tipo: 'TECNICATURA', sede: 'Fraile Pintado', localidad: 'Fraile Pintado', res: 'R-5204-E/23', duracion: '3 años', pp: '3° año: Práctica Laboral (6 hs cát.)', perfil: 'Técnico preparado para gestionar PyMEs, compras, logística, costos, marketing estratégico y administración comercial e impositiva.', cohorte: 'Carrera histórica de la Sede Fraile Pintado' },
+      { id: 'c17', nombre: 'Tec. Superior en Ciencia de Datos e Inteligencia Artificial', tipo: 'TECNICATURA', sede: 'Fraile Pintado', localidad: 'Fraile Pintado', res: 'R-3098-E/22', duracion: '3 años', pp: '1° año: PP I (4 hs cát.) · 2° año: PP II (4 hs cát.) · 3° año: PP III (5 hs cát.)', perfil: 'Profesional capacitado en programación Python/SQL, arquitectura y análisis de datos (EDI II), estadística, Machine Learning, IA generativa y diseño de dashboards interactivos.', cohorte: 'Cohorte 2025 en curso (2° año en 2026; reapertura al finalizar cohorte)' },
+      { id: 'c18', nombre: 'Tec. Superior en Diseño e Indumentaria Regional', tipo: 'TECNICATURA', sede: 'Fraile Pintado', localidad: 'Fraile Pintado', res: 'R-7975-E/17', duracion: '3 años', pp: 'Prácticas en taller textil, moldería y producción de indumentaria con identidad regional.', perfil: 'Técnico especializado en diseño textil, moldería industrial, confección y puesta en valor de técnicas e identidad cultural regional.', cohorte: 'Oferta oficial Sede Fraile Pintado' },
+      { id: 'c19', nombre: 'Tec. Superior en Gestión de la Producción Agropecuaria', tipo: 'TECNICATURA', sede: 'Fraile Pintado', localidad: 'Fraile Pintado', res: 'R-5053-E/25', duracion: '3 años', pp: '2° año: PP I (6 hs cát.) · 3° año: PP II (6 hs cát.)', perfil: 'Técnico capacitado para planificar, supervisar y administrar explotaciones agrícolas, frutihortícolas y ganaderas de la región del Ramal.', cohorte: 'Oferta oficial Sede Fraile Pintado' },
+      { id: 'c20', nombre: 'Tec. Superior en Gestión y Producción Agropecuaria c/o en Conservación de Suelos y Recursos Hídricos', tipo: 'TECNICATURA', sede: 'Fraile Pintado', localidad: 'Fraile Pintado', res: 'R-4222-E/23', duracion: '3 años', pp: 'Prácticas Profesionalizantes en terreno agrícola, manejo de cuencas, riego y conservación de suelos.', perfil: 'Técnico especializado en producción agropecuaria sustentable, manejo eficiente del riego y preservación de suelos y recursos hídricos.', cohorte: 'Oferta oficial Sede Fraile Pintado' },
+      { id: 'c21', nombre: 'Tec. Superior en Higiene y Seguridad en el Trabajo', tipo: 'TECNICATURA', sede: 'Fraile Pintado', localidad: 'Fraile Pintado', res: 'R-6055-E/23', duracion: '3 años', pp: '1° año: PP I (4 hs cát.) · 2° año: PP II (5 hs cát.) · 3° año: PP III (5 hs cát.)', perfil: 'Técnico habilitado para gestionar planes de prevención de riesgos laborales, seguridad industrial, ergonomía y auditorías ambientales.', cohorte: 'Cohorte iniciada en 2025 en Sede Fraile Pintado' },
+
+      // SEDE YUTO (3)
+      { id: 'c22', nombre: 'Tec. Superior en Acompañamiento Terapéutico', tipo: 'TECNICATURA', sede: 'Yuto', localidad: 'Yuto', res: 'R-5570-E/S-23', duracion: '3 años', pp: '1° año: PP I (5 hs cát.) · 2° año: PP II (6 hs cát.) · 3° año: PP III (8 hs cát.)', perfil: 'Profesional del ámbito sociosanitario preparado para integrar equipos interdisciplinarios en salud mental, discapacidad y rehabilitación.', cohorte: 'Oferta oficial Sede Yuto' },
+      { id: 'c23', nombre: 'Tec. Superior en Desarrollo de Software', tipo: 'TECNICATURA', sede: 'Yuto', localidad: 'Yuto', res: 'R-2730-E/22', duracion: '3 años', pp: '2° año: PP I (6 hs cát.) · 3° año: PP II (6 hs cát.)', perfil: 'Técnico capacitado para diseñar, programar y mantener aplicaciones web, móviles, bases de datos y sistemas de software.', cohorte: 'Cohorte activa en Sede Yuto' },
+      { id: 'c24', nombre: 'Tec. Superior en Tecnología de los Alimentos', tipo: 'TECNICATURA', sede: 'Yuto', localidad: 'Yuto', res: 'R-2864-E/21', duracion: '3 años', pp: '2° año: PP I (4 hs cát.) · 3° año: PP II (8 hs cát.)', perfil: 'Técnico formado en control de calidad bromatológica, procesos de industrialización agroalimentaria, inocuidad y normativas vigentes.', cohorte: 'Oferta oficial Sede Yuto' }
+    ];
+
+    // 2. RENDERIZADO DE LA GRILLA DE CARRERAS EN LA PÁGINA WEB
+    let currentTipo = 'TODAS';
+
+    function setTipoFilter(tipo) {
+      currentTipo = tipo;
+      ['TODAS', 'TECNICATURA', 'PROFESORADO'].forEach(t => {
+        const btn = document.getElementById('btnTipo-' + t);
+        if (t === tipo) {
+          btn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-600 text-white transition-all shadow-sm';
+        } else {
+          btn.className = 'px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all';
+        }
+      });
+      renderCarreras();
+    }
+
+    function filterBySede(sedeName) {
+      document.getElementById('selectSede').value = sedeName;
+      document.getElementById('carreras').scrollIntoView({ behavior: 'smooth' });
+      renderCarreras();
+    }
+
+    function renderCarreras() {
+      const sedeVal = document.getElementById('selectSede').value;
+      const q = document.getElementById('searchCarrera').value.trim().toLowerCase();
+      const grid = document.getElementById('gridCarreras');
+
+      const filtered = CARRERAS.filter(c => {
+        const matchTipo = currentTipo === 'TODAS' || c.tipo === currentTipo;
+        const matchSede = !sedeVal || c.sede === sedeVal;
+        const matchQ = !q || c.nombre.toLowerCase().includes(q) || c.res.toLowerCase().includes(q) || c.sede.toLowerCase().includes(q);
+        return matchTipo && matchSede && matchQ;
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="col-span-full bg-white rounded-xl border border-slate-200 p-8 text-center text-sm text-slate-500">No se encontraron carreras con ese criterio de búsqueda.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(c => `
+        <article class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-emerald-500 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm font-bold">
+                ${c.tipo === 'TECNICATURA' ? '🎓' : '📘'}
+              </span>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${c.tipo === 'TECNICATURA' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-sky-50 text-sky-700 border border-sky-200'}">
+                ${c.tipo}
+              </span>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm leading-snug">${c.nombre}</h3>
+            <p class="text-xs text-emerald-700 font-medium mt-1.5">📍 Sede ${c.sede} (${c.localidad})</p>
+            <p class="text-[11px] text-slate-500 mt-1">📄 Resolución: <strong>${c.res}</strong></p>
+            <p class="text-[11px] text-slate-500 mt-1">🛠️ Prácticas: ${c.pp}</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">⏱️ Duración: ${c.duracion}</span>
+            <button onclick="openChatForCareer('${c.id}')" class="text-xs font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1">
+              <span>Ver Perfil en Chat</span> <span>→</span>
+            </button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // 3. MOTOR DEL CHATBOT INTERACTIVO
+    const chatWin = document.getElementById('chatWindow');
+    const chatMsgs = document.getElementById('chatMessages');
+    let chatOpen = true;
+
+    function toggleChat() {
+      chatOpen = !chatOpen;
+      if (chatOpen) {
+        chatWin.classList.remove('hidden');
+      } else {
+        chatWin.classList.add('hidden');
+      }
+    }
+
+    function openChatWithTopic(topicKey) {
+      if (!chatOpen) toggleChat();
+      handleQuickTopic(topicKey);
+    }
+
+    function openChatForCareer(careerId) {
+      if (!chatOpen) toggleChat();
+      const c = CARRERAS.find(x => x.id === careerId);
+      if (!c) return;
+      appendUserMessage(`Información sobre ${c.nombre}`);
+      showCareerDetailInChat(c);
+    }
+
+    function appendUserMessage(text) {
+      const div = document.createElement('div');
+      div.className = 'flex justify-end msg-anim';
+      div.innerHTML = `<div class="bg-emerald-600 text-white text-xs sm:text-sm px-3.5 py-2.5 rounded-2xl rounded-tr-sm max-w-[85%] shadow-sm">${text}</div>`;
+      chatMsgs.appendChild(div);
+      chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    }
+
+    function appendBotMessage(htmlContent, buttons = []) {
+      const div = document.createElement('div');
+      div.className = 'flex flex-col items-start gap-2 msg-anim';
+      
+      let btnsHtml = '';
+      if (buttons && buttons.length) {
+        btnsHtml = `<div class="flex flex-wrap gap-1.5 mt-1 w-full">` + buttons.map(b => {
+          if (b.careerId) {
+            return `<button onclick="openChatForCareer('${b.careerId}')" class="text-left text-[11px] font-semibold bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1.5 rounded-xl transition-all shadow-sm">${b.label}</button>`;
+          }
+          return `<button onclick="handleQuickTopic('${b.topic}')" class="text-left text-[11px] font-semibold bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1.5 rounded-xl transition-all shadow-sm">${b.label}</button>`;
+        }).join('') + `</div>`;
+      }
+
+      div.innerHTML = `
+        <div class="bg-white border border-slate-200 text-slate-700 text-xs sm:text-[13px] leading-relaxed p-3.5 rounded-2xl rounded-tl-sm max-w-[94%] shadow-sm space-y-2">
+          ${htmlContent}
+        </div>
+        ${btnsHtml}
+      `;
+      chatMsgs.appendChild(div);
+      chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    }
+
+    function showCareerDetailInChat(c) {
+      const html = `
+        <p class="font-bold text-slate-900 text-sm">${c.tipo === 'TECNICATURA' ? '🎓' : '📘'} ${c.nombre}</p>
+        <ul class="space-y-1 text-xs text-slate-600 mt-1">
+          <li>📍 <strong>Sede:</strong> ${c.sede} (${c.localidad})</li>
+          <li>📄 <strong>Resolución Ministerial:</strong> ${c.res}</li>
+          <li>⏱️ <strong>Duración:</strong> ${c.duracion}</li>
+          <li>🛠️ <strong>Prácticas Profesionalizantes (PP):</strong> ${c.pp}</li>
+          <li>📌 <strong>Estado / Cohorte:</strong> ${c.cohorte}</li>
+        </ul>
+        <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-100 text-xs text-emerald-900 mt-2">
+          <strong>💼 Perfil Profesional:</strong> ${c.perfil}
+        </div>
+      `;
+      appendBotMessage(html, [
+        { label: '🔙 Ver todas las sedes', topic: 'carreras_sede' },
+        { label: '📝 ¿Cómo me inscribo?', topic: 'ingreso_pasos' },
+        { label: '🏠 Menú Principal', topic: 'menu' }
+      ]);
+    }
+
+    const MAIN_MENU_BUTTONS = [
+      { label: '🏫 Carreras por Sede (24)', topic: 'carreras_sede' },
+      { label: '📝 Sistema de Ingreso (4 Pasos)', topic: 'ingreso_pasos' },
+      { label: '📋 Requisitos y Papeles', topic: 'requisitos' },
+      { label: '📅 Fechas de Preinscripción y Cursillo', topic: 'fechas' },
+      { label: '📚 Perfiles y Resoluciones', topic: 'perfiles_menu' },
+      { label: '🕒 Horarios, Sedes y Contacto', topic: 'horarios_contacto' }
+    ];
+
+    function handleQuickTopic(topic) {
+      const labels = {
+        menu: 'Mostrar Menú Principal',
+        carreras_sede: '¿Qué carreras hay en el IES N° 10 por sede?',
+        sede_normal: 'Carreras en Sede Escuela Normal',
+        sede_comer: 'Carreras en Sede Comercial N° 4',
+        sede_fraile: 'Carreras en Sede Fraile Pintado',
+        sede_yuto: 'Carreras en Sede Yuto',
+        ingreso_pasos: '¿Cómo es el sistema de ingreso y examen?',
+        requisitos: '¿Qué requisitos y papeles debo presentar?',
+        fechas: '¿Cuáles son las fechas de inscripción y cursillo?',
+        perfiles_menu: 'Consultar perfil profesional y plan de estudios',
+        horarios_contacto: '¿Cuáles son los horarios, dirección y redes oficiales?'
+      };
+      if (topic !== 'init' && labels[topic]) {
+        appendUserMessage(labels[topic]);
+      }
+
+      switch (topic) {
+        case 'init':
+        case 'menu':
+          appendBotMessage(
+            `<p class="font-bold text-slate-900">¡Hola! 👋 Soy el Asistente Virtual del <strong>Instituto de Educación Superior N° 10</strong>.</p>
+             <p>Estoy entrenado con toda la información oficial de nuestras <strong>4 sedes</strong> (Escuela Normal, Comercial N° 4, Fraile Pintado y Yuto). ¿Qué te gustaría consultar hoy?</p>`,
+            MAIN_MENU_BUTTONS
+          );
+          break;
+
+        case 'carreras_sede':
+          appendBotMessage(
+            `<p class="font-bold text-slate-900">🎓 Oferta Académica del IES N° 10 por Sedes</p>
+             <p>Contamos con <strong>24 carreras oficiales</strong> (15 Tecnicaturas Superiores de 3 años y 9 Profesorados de 4/5 años). Seleccioná una sede para ver sus carreras y resoluciones ministeriales:</p>`,
+            [
+              { label: '📍 Sede Escuela Normal (9)', topic: 'sede_normal' },
+              { label: '📍 Sede Comercial N° 4 (4)', topic: 'sede_comer' },
+              { label: '📍 Sede Fraile Pintado (8)', topic: 'sede_fraile' },
+              { label: '📍 Sede Yuto (3)', topic: 'sede_yuto' },
+              { label: '🏠 Menú Principal', topic: 'menu' }
+            ]
+          );
+          break;
+
+        case 'sede_normal': {
+          const list = CARRERAS.filter(c => c.sede === 'Escuela Normal');
+          const html = `
+            <p class="font-bold text-slate-900">📍 Sede Central: Escuela Normal (Libertador Gral. San Martín)</p>
+            <p class="text-xs text-slate-500">Dirección: Belisario Roldán esq. Pte. Perón · Apertura desde las 14:30 hs.</p>
+            <p class="text-xs font-semibold text-emerald-800 mt-1">Tocá cualquier carrera para ver su Perfil Profesional, Resolución y Prácticas:</p>
+          `;
+          const btns = list.map(c => ({ label: `${c.tipo === 'TECNICATURA' ? '🎓' : '📘'} ${c.nombre} (${c.res})`, careerId: c.id }));
+          btns.push({ label: '🔙 Otras Sedes', topic: 'carreras_sede' });
+          appendBotMessage(html, btns);
+          break;
+        }
+
+        case 'sede_comer': {
+          const list = CARRERAS.filter(c => c.sede === 'Comercial N°4');
+          const html = `
+            <p class="font-bold text-slate-900">📍 Sede Escuela Comercial N° 4 (Libertador Gral. San Martín)</p>
+            <p class="text-xs text-slate-500">Horario de atención y cursado: Turno vespertino/nocturno desde las 18:30 hs.</p>
+            <p class="text-xs font-semibold text-emerald-800 mt-1">Tocá cualquier carrera para ver su Perfil Profesional, Resolución y Prácticas:</p>
+          `;
+          const btns = list.map(c => ({ label: `${c.tipo === 'TECNICATURA' ? '🎓' : '📘'} ${c.nombre} (${c.res})`, careerId: c.id }));
+          btns.push({ label: '🔙 Otras Sedes', topic: 'carreras_sede' });
+          appendBotMessage(html, btns);
+          break;
+        }
+
+        case 'sede_fraile': {
+          const list = CARRERAS.filter(c => c.sede === 'Fraile Pintado');
+          const html = `
+            <p class="font-bold text-slate-900">📍 Sede Fraile Pintado (Dpto. Ledesma)</p>
+            <p class="text-xs text-slate-500">Horario de apertura y cursado: Turno vespertino/nocturno desde las 18:30 hs.</p>
+            <p class="text-xs font-semibold text-emerald-800 mt-1">Tocá cualquier carrera para ver su Perfil Profesional, Resolución y Prácticas:</p>
+          `;
+          const btns = list.map(c => ({ label: `${c.tipo === 'TECNICATURA' ? '🎓' : '📘'} ${c.nombre} (${c.res})`, careerId: c.id }));
+          btns.push({ label: '🔙 Otras Sedes', topic: 'carreras_sede' });
+          appendBotMessage(html, btns);
+          break;
+        }
+
+        case 'sede_yuto': {
+          const list = CARRERAS.filter(c => c.sede === 'Yuto');
+          const html = `
+            <p class="font-bold text-slate-900">📍 Sede Yuto (Dpto. Ledesma)</p>
+            <p class="text-xs text-slate-500">Horario de apertura y cursado: Turno vespertino/nocturno desde las 18:30 hs.</p>
+            <p class="text-xs font-semibold text-emerald-800 mt-1">Tocá cualquier carrera para ver su Perfil Profesional, Resolución y Prácticas:</p>
+          `;
+          const btns = list.map(c => ({ label: `🎓 ${c.nombre} (${c.res})`, careerId: c.id }));
+          btns.push({ label: '🔙 Otras Sedes', topic: 'carreras_sede' });
+          appendBotMessage(html, btns);
+          break;
+        }
+
+        case 'ingreso_pasos':
+          appendBotMessage(
+            `<p class="font-bold text-slate-900">📝 Sistema de Ingreso y Admisión al IES N° 10</p>
+             <p>El ingreso no es por sorteo, sino mediante un recorrido de <strong>4 pasos obligatorios</strong>:</p>
+             <ol class="list-decimal pl-4 space-y-1.5 text-xs">
+               <li><strong>Preinscripción Online:</strong> Creás tu usuario en <a href="https://nexo.jujuy.edu.ar" target="_blank" class="text-emerald-700 font-bold underline">nexo.jujuy.edu.ar</a> y completás el formulario virtual. Podés anotarte en todas las carreras que quieras.</li>
+               <li><strong>Confirmación Presencial:</strong> Vas personalmente al IES a presentar los papeles básicos. <em>¡Atención! Si no cumplís este paso presencial, la preinscripción online se anula.</em></li>
+               <li><strong>Cursillo de Ingreso:</strong> Es obligatorio (dura aprox. 1 mes, del 23/02 al 20/03). Puede ser presencial o virtual según cada sede, y todo el material de estudio está en el <strong>Aula Virtual</strong> desde el primer día.</li>
+               <li><strong>Evaluación Final y Orden de Mérito:</strong> Al terminar el cursillo rendís un <strong>examen final presencial y obligatorio</strong>. Tu nota define tu lugar en el <strong>Orden de Mérito (ranking)</strong>, único criterio para ingresar según los cupos disponibles.</li>
+             </ol>`,
+            [
+              { label: '📋 Ver Papeles para Confirmar', topic: 'requisitos' },
+              { label: '📅 Ver Fechas Límite', topic: 'fechas' },
+              { label: '🏠 Menú Principal', topic: 'menu' }
+            ]
+          );
+          break;
+
+        case 'requisitos':
+          appendBotMessage(
+            `<p class="font-bold text-slate-900">📋 Requisitos y Documentación Obligatoria</p>
+             <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900">
+               <strong>1) Para Confirmar tu Preinscripción Presencial en el IES (Paso 2):</strong><br>
+               Solo necesitás llevar 2 papeles muy simples:<br>
+               ✔️ <strong>Fotocopia simple de DNI.</strong><br>
+               ✔️ <strong>Fotocopia simple del título secundario</strong> o <strong>constancia de finalización</strong> de estudios.
+             </div>
+             <p class="text-xs text-slate-600 mt-2">
+               <strong>2) Para el Legajo Definitivo (una vez que ingresás por Orden de Mérito):</strong><br>
+               Carpeta colgante oficio con: Título secundario autenticado o constancia original, fotocopia de DNI, Partida de Nacimiento actualizada, Constancia de CUIL, Planilla/Certificado de Buena Salud y 2 fotos 4x4.
+             </p>`,
+            [
+              { label: '📅 Ver Fechas Límite de Entrega', topic: 'fechas' },
+              { label: '📝 Cómo es el Cursillo y Examen', topic: 'ingreso_pasos' },
+              { label: '🏠 Menú Principal', topic: 'menu' }
+            ]
+          );
+          break;
+
+        case 'fechas':
+          appendBotMessage(
+            `<p class="font-bold text-slate-900">📅 Cronograma y Fechas Clave de Admisión</p>
+             <p class="text-xs">El proceso cuenta con una instancia en <strong>Diciembre</strong> (fin del año previo) y el cierre definitivo en <strong>Febrero/Marzo</strong>:</p>
+             <ul class="space-y-1.5 text-xs mt-1">
+               <li>🟢 <strong>1° Llamado (Diciembre):</strong> Preinscripción online en <code>nexo.jujuy.edu.ar</code> del <strong>15/12 (00:00 h) al 29/12 (15:00 h)</strong>. Confirmación presencial en el IES los días <strong>22, 23 y 29 de diciembre</strong> (límite 29/12).</li>
+               <li>🔴 <strong>Cierre Definitivo Preinscripción Online:</strong> Hasta el <strong>13 de febrero a las 23:59 hs</strong> (ni un minuto más).</li>
+               <li>📄 <strong>Fecha Límite Confirmación Presencial (Papeles):</strong> Hasta el <strong>20 de febrero</strong> en la sede del IES.</li>
+               <li>📚 <strong>Cursillo de Ingreso y Examen Final:</strong> Desde el <strong>23 de febrero al 20 de marzo</strong>.</li>
+             </ul>
+             <p class="text-[11px] text-slate-500 mt-1"><em>Nota sobre cohortes:</em> Algunas tecnicaturas abren inscripción por cohorte (al finalizar los 3 años de la cohorte en curso o según demanda ministerial).</p>`,
+            [
+              { label: '📋 Qué papeles llevar', topic: 'requisitos' },
+              { label: '🏫 Ver Carreras por Sede', topic: 'carreras_sede' },
+              { label: '🏠 Menú Principal', topic: 'menu' }
+            ]
+          );
+          break;
+
+        case 'perfiles_menu':
+          appendBotMessage(
+            `<p class="font-bold text-slate-900">📚 Perfiles Profesionales, Resoluciones y Prácticas (PP)</p>
+             <p class="text-xs">Elegí una carrera destacada o seleccioná una sede para ver la ficha completa de cualquiera de las 24 carreras:</p>`,
+            [
+              { label: '🎓 Ciencia de Datos e IA (Fraile)', careerId: 'c17' },
+              { label: '🎓 Energías Renovables (Normal)', careerId: 'c9' },
+              { label: '🎓 Desarrollo de Software (Yuto)', careerId: 'c23' },
+              { label: '🎓 Enfermería (Comercial N°4)', careerId: 'c10' },
+              { label: '🎓 Adm. de Empresas (Fraile)', careerId: 'c16' },
+              { label: '📘 Prof. en Historia (Fraile)', careerId: 'c14' },
+              { label: '🏫 Ver las 24 carreras por Sede', topic: 'carreras_sede' }
+            ]
+          );
+          break;
+
+        case 'horarios_contacto':
+          appendBotMessage(
+            `<p class="font-bold text-slate-900">🕒 Horarios de Atención, Sedes y Redes Oficiales</p>
+             <ul class="space-y-1.5 text-xs">
+               <li>🏛️ <strong>Sede Central (Escuela Normal - Libertador):</strong> Calle Belisario Roldán esq. Pte. Perón. Abre sus puertas para cursado desde las <strong>14:00 / 14:30 hs</strong> (turno tarde y noche).</li>
+               <li>🏫 <strong>Sedes Comercial N° 4, Fraile Pintado y Yuto:</strong> Abren sus puertas a partir de las <strong>18:30 hs</strong>.</li>
+               <li>🕒 <strong>Horario Administrativo General (Portal IES 10):</strong> Lunes a Viernes de <strong>19:30 a 23:50 hs</strong>.</li>
+               <li>✉️ <strong>Correo Oficial:</strong> <a href="mailto:ies10ledesma@gmail.com" class="text-emerald-700 font-semibold underline">ies10ledesma@gmail.com</a></li>
+               <li>📘 <strong>Únicas Páginas de Facebook Oficiales Activas:</strong><br>
+                 • <a href="https://www.facebook.com/profile.php?id=61566581100466" target="_blank" class="text-emerald-700 font-semibold underline">IES10 - Dpto. Ledesma (General) ↗</a><br>
+                 • <a href="https://www.facebook.com/ies.fraile.pintado" target="_blank" class="text-emerald-700 font-semibold underline">IES N° 10 - Sede Fraile Pintado ↗</a>
+               </li>
+             </ul>`,
+            MAIN_MENU_BUTTONS
+          );
+          break;
+      }
+    }
+
+    // 4. PROCESADOR INTELIGENTE DE LENGUAJE NATURAL (BÚSQUEDA POR TEXTO LIBRE)
+    function handleUserSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const raw = input.value.trim();
+      if (!raw) return;
+      input.value = '';
+      appendUserMessage(raw);
+
+      const q = raw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      // 1. Verificar si pregunta por una carrera específica
+      const matchedCareer = CARRERAS.find(c => {
+        const cn = c.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        return (q.includes('datos') && cn.includes('datos')) ||
+               (q.includes('software') && cn.includes('software')) ||
+               (q.includes('enfermeria') && cn.includes('enfermeria')) ||
+               (q.includes('energia') && cn.includes('energia')) ||
+               (q.includes('historia') && cn.includes('historia')) ||
+               (q.includes('ingles') && cn.includes('ingles')) ||
+               (q.includes('matematica') && cn.includes('matematica')) ||
+               (q.includes('quimica') && cn.includes('quimica')) ||
+               (q.includes('higiene') && cn.includes('higiene')) ||
+               (q.includes('cocina') && cn.includes('cocina')) ||
+               (q.includes('deport') && cn.includes('deport')) ||
+               (q.includes('rural') && cn.includes('rural')) ||
+               (q.includes('terapeutico') && cn.includes('terapeutico')) ||
+               (q.includes('alimento') && cn.includes('alimento')) ||
+               (q.includes('indumentaria') && cn.includes('indumentaria')) ||
+               (q.includes('ninez') && cn.includes('ninez')) ||
+               (q.includes('sanitario') && cn.includes('sanitario')) ||
+               (q.includes('agro') && cn.includes('agro'));
+      });
+
+      if (matchedCareer) {
+        showCareerDetailInChat(matchedCareer);
+        return;
+      }
+
+      // 2. Verificar si pregunta por una sede específica
+      if (q.includes('fraile')) { handleQuickTopic('sede_fraile'); return; }
+      if (q.includes('yuto')) { handleQuickTopic('sede_yuto'); return; }
+      if (q.includes('comercial') || q.includes('comer 4')) { handleQuickTopic('sede_comer'); return; }
+      if (q.includes('normal')) { handleQuickTopic('sede_normal'); return; }
+
+      // 3. Verificar intenciones frecuentes (requisitos, fechas, ingreso, horarios, carreras)
+      if (q.includes('requisito') || q.includes('papel') || q.includes('dni') || q.includes('document')) {
+        handleQuickTopic('requisitos'); return;
+      }
+      if (q.includes('fecha') || q.includes('cuando') || q.includes('diciembre') || q.includes('febrero')) {
+        handleQuickTopic('fechas'); return;
+      }
+      if (q.includes('ingreso') || q.includes('cursillo') || q.includes('examen') || q.includes('merito') || q.includes('nexo') || q.includes('inscrib')) {
+        handleQuickTopic('ingreso_pasos'); return;
+      }
+      if (q.includes('horario') || q.includes('hora') || q.includes('direccion') || q.includes('ubicacion') || q.includes('facebook') || q.includes('contacto') || q.includes('correo')) {
+        handleQuickTopic('horarios_contacto'); return;
+      }
+      if (q.includes('carrera') || q.includes('sede') || q.includes('oferta') || q.includes('estudiar') || q.includes('profesorado') || q.includes('tecnicatura')) {
+        handleQuickTopic('carreras_sede'); return;
+      }
+      if (q.includes('plan') || q.includes('perfil') || q.includes('resolucion') || q.includes('practica')) {
+        handleQuickTopic('perfiles_menu'); return;
+      }
+
+      // Respuesta por defecto guiada
+      appendBotMessage(
+        `<p>Puedo ayudarte con información exacta sobre las <strong>24 carreras del IES N° 10</strong>, requisitos, fechas en <code>nexo.jujuy.edu.ar</code>, cursillo de ingreso y horarios por sede. Elegí una opción abajo:</p>`,
+        MAIN_MENU_BUTTONS
+      );
+    }
+
+    function resetChat() {
+      chatMsgs.innerHTML = '';
+      handleQuickTopic('init');
+    }
+
+    // Inicialización al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCarreras();
+      handleQuickTopic('init');
+    });
+  </script>
+</body>
+</html>
